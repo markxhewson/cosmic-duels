@@ -1,0 +1,6 @@
+name: Duels
+version: '${project.version}'
+main: tech.markxhewson.duels.Duels
+api-version: '1.20'
+authors: [markxhewson]
+description: A duels plugin
