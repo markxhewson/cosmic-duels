@@ -9,6 +9,7 @@ import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.arena.Arena;
 import tech.markxhewson.duels.manager.duel.setting.DuelSettings;
 import tech.markxhewson.duels.manager.duel.state.GameState;
+import tech.markxhewson.duels.menu.RiskInventoryMenu;
 import tech.markxhewson.duels.menu.SelectArenaMenu;
 import tech.markxhewson.duels.menu.SelectDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
@@ -44,8 +45,14 @@ public class DuelGame {
     }
 
     public void openSettingsMenu() {
+        RiskInventoryMenu riskInventoryMenu = new RiskInventoryMenu(plugin, this);
+
+        riskInventoryMenu.open(playerOne);
+        riskInventoryMenu.open(playerTwo);
+        /*
         SelectDuelSettingsMenu selectDuelSettingsMenu = new SelectDuelSettingsMenu(plugin, this);
         selectDuelSettingsMenu.open(playerOne);
+         */
     }
 
     public void openArenaSelectionMenu() {

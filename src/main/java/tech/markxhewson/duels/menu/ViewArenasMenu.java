@@ -23,9 +23,7 @@ public class ViewArenasMenu {
         this.plugin = plugin;
 
         this.menu = new ChestGui(3, "Arenas");
-        menu.setOnGlobalClick(event -> {
-            event.setCancelled(true);
-        });
+        menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
     }

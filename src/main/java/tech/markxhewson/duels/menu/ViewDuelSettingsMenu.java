@@ -3,6 +3,7 @@ package tech.markxhewson.duels.menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,9 +26,7 @@ public class ViewDuelSettingsMenu {
         this.duelGame = duelGame;
 
         this.menu = new ChestGui(3, "Duel Settings");
-        menu.setOnGlobalClick(event -> {
-            event.setCancelled(true);
-        });
+        menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
     }
@@ -39,24 +38,12 @@ public class ViewDuelSettingsMenu {
     private void updateItems() {
         StaticPane pane = new StaticPane(0, 0, 9, 3);
 
-        addSettingItem(pane, DuelSetting.GOLDEN_APPLES, 0, 0);
-        addSettingItem(pane, DuelSetting.MCMMO, 1, 0);
-        addSettingItem(pane, DuelSetting.POTIONS, 2, 0);
-        addSettingItem(pane, DuelSetting.BOWS, 3, 0);
-        addSettingItem(pane, DuelSetting.HEALING, 4, 0);
-        addSettingItem(pane, DuelSetting.FOOD_LOSS, 5, 0);
-        addSettingItem(pane, DuelSetting.ENDER_PEARLS, 6, 0);
-        addSettingItem(pane, DuelSetting.RISK_INVENTORY, 7, 0);
-        addSettingItem(pane, DuelSetting.ARMOR, 8, 0);
-        addSettingItem(pane, DuelSetting.WEAPONS, 0, 1);
-        addSettingItem(pane, DuelSetting.SLASHFIX, 1, 1);
-        addSettingItem(pane, DuelSetting.SLASHFIX_ALL, 2, 1);
-        addSettingItem(pane, DuelSetting.SLASHFLY, 3, 1);
-        addSettingItem(pane, DuelSetting.COSMIC_ENVOY, 4, 1);
-        addSettingItem(pane, DuelSetting.DEATH_CERTIFICATES, 5, 1);
-        addSettingItem(pane, DuelSetting.INVENTORY_PETS, 6, 1);
-        addSettingItem(pane, DuelSetting.COSMIC_CLIENT, 7, 1);
-        addSettingItem(pane, DuelSetting.ITEM_SKINS, 8, 1);
+        int index = 0;
+
+        for (DuelSetting value : DuelSetting.values()) {
+            addSettingItem(pane, value, index);
+            index++;
+        }
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 1, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 2, 2);
@@ -98,16 +85,16 @@ public class ViewDuelSettingsMenu {
     }
 
     public String addSettingLore(DuelSetting setting) {
-        return CC.translate(setting.getDisplayName() + ": " + (this.duelGame.getSettings().isSettingEnabled(setting) ? "&a&lᴏɴ" : "&c&lᴏғғ"));
+        return CC.translate("&e" + setting.getDisplayName() + ": " + (this.duelGame.getSettings().isSettingEnabled(setting) ? "&a&lᴏɴ" : "&c&lᴏғғ"));
     }
 
-    public void addSettingItem(StaticPane pane, DuelSetting setting, int x, int y) {
+    public void addSettingItem(StaticPane pane, DuelSetting setting, int index) {
         pane.addItem(new GuiItem(
                 new ItemBuilder(setting.getMaterial())
-                        .setDisplayName(setting.getDisplayName())
+                        .setDisplayName("&e&l" + setting.getDisplayName())
                         .setLore(this.duelGame.getSettings().getSetting(setting) ? "&a&lᴇɴᴀʙʟᴇᴅ" : "&c&lᴅɪsᴀʙʟᴇᴅ")
                         .build()
-        ), x, y);
+        ), Slot.fromIndex(index));
     }
 
     public void confirmSettings() {

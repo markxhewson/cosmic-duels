@@ -30,14 +30,18 @@ public class ProjectileLaunchListener implements Listener {
 
         DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
+        if (duelGame == null) {
+            return;
+        }
+
         if (event.getEntity().getType() == EntityType.ENDER_PEARL) {
-            if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.ENDER_PEARLS)) {
+            if (!duelGame.getSettings().isSettingEnabled(DuelSetting.ENDER_PEARLS)) {
                 player.sendMessage(CC.translate("&c&l<!> &cᴇɴᴅᴇʀᴘᴇᴀʀʟs ᴀʀᴇ ᴅɪsᴀʙʟᴇᴅ ɪɴ ᴛʜɪs ᴅᴜᴇʟ!"));
                 event.setCancelled(true);
             }
         }
         else if (event.getEntity().getType() == EntityType.ARROW) {
-            if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.BOWS)) {
+            if (!duelGame.getSettings().isSettingEnabled(DuelSetting.BOWS)) {
                 player.sendMessage(CC.translate("&c&l<!> &cʙᴏᴡs ᴀʀᴇ ᴅɪsᴀʙʟᴇᴅ ɪɴ ᴛʜɪs ᴅᴜᴇʟ!"));
                 event.setCancelled(true);
             }

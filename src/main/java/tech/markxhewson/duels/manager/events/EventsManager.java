@@ -24,6 +24,7 @@ public class EventsManager {
         addListener(new HealthRegainListener(plugin));
         addListener(new ItemConsumeListener(plugin));
         addListener(new ProjectileLaunchListener(plugin));
+        addListener(new FakeEntityDamageListener(plugin));
 
         loadListeners();
     }

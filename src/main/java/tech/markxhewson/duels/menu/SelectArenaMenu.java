@@ -27,10 +27,7 @@ public class SelectArenaMenu {
         this.duelGame = duelGame;
 
         this.menu = new ChestGui(3, "Arena Selection");
-        menu.setOnGlobalClick(event -> {
-            menu.update();
-            event.setCancelled(true);
-        });
+        menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
     }

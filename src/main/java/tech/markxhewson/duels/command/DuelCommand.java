@@ -5,6 +5,7 @@ import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.util.Invite;
+import tech.markxhewson.duels.menu.RiskInventoryMenu;
 import tech.markxhewson.duels.menu.ViewDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
 
