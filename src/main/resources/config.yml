@@ -34,3 +34,5 @@ arenas:
     active: false
   sovereign:
     active: false
+
+data: []
