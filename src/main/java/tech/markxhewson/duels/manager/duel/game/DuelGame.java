@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.arena.Arena;
+import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
 import tech.markxhewson.duels.manager.duel.setting.DuelSettings;
 import tech.markxhewson.duels.manager.duel.state.GameState;
 import tech.markxhewson.duels.menu.RiskInventoryMenu;
@@ -15,12 +16,14 @@ import tech.markxhewson.duels.menu.SelectDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class DuelGame {
 
     private final Duels plugin;
+    private final UUID gameUUID = UUID.randomUUID();
 
     // player one is always the one who initiated the duel
     private final Player playerOne;
@@ -44,15 +47,16 @@ public class DuelGame {
         openSettingsMenu();
     }
 
-    public void openSettingsMenu() {
+    public void openRiskInventoryMenu() {
         RiskInventoryMenu riskInventoryMenu = new RiskInventoryMenu(plugin, this);
 
         riskInventoryMenu.open(playerOne);
         riskInventoryMenu.open(playerTwo);
-        /*
+    }
+
+    public void openSettingsMenu() {
         SelectDuelSettingsMenu selectDuelSettingsMenu = new SelectDuelSettingsMenu(plugin, this);
         selectDuelSettingsMenu.open(playerOne);
-         */
     }
 
     public void openArenaSelectionMenu() {

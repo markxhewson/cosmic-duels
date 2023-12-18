@@ -5,30 +5,32 @@ import org.bukkit.Material;
 
 @Getter
 public enum DuelSetting {
-    GOLDEN_APPLES(Material.ENCHANTED_GOLDEN_APPLE, "ɢᴏʟᴅᴇɴ ᴀᴘᴘʟᴇs"),
-    MCMMO(Material.DIAMOND_AXE, "ᴍᴄᴍᴍᴏ"),
-    POTIONS(Material.BREWING_STAND, "ᴘᴏᴛɪᴏɴs"),
-    BOWS(Material.BOW, "ʙᴏᴡs"),
-    HEALING(Material.GHAST_TEAR, "ʜᴇᴀʟɪɴɢ"),
-    FOOD_LOSS(Material.COOKED_BEEF, "ғᴏᴏᴅ ʟᴏss"),
-    ENDER_PEARLS(Material.ENDER_PEARL, "ᴇɴᴅᴇʀ ᴘᴇᴀʀʟs"),
-    RISK_INVENTORY(Material.CHEST, "ʀɪsᴋ ɪɴᴠᴇɴᴛᴏʀʏ"),
-    ARMOR(Material.DIAMOND_CHESTPLATE, "ᴀʀᴍᴏʀ"),
-    WEAPONS(Material.DIAMOND_SWORD, "ᴡᴇᴀᴘᴏɴs"),
-    SLASHFIX(Material.ANVIL, "/ғɪx"),
-    SLASHFIX_ALL(Material.ANVIL, "/ғɪx ᴀʟʟ"),
-    SLASHFLY(Material.FEATHER, "/ғʟʏ"),
-    COSMIC_ENVOY(Material.FIREWORK_ROCKET, "ᴄᴏsᴍɪᴄ ᴇɴᴠᴏʏ"),
-    DEATH_CERTIFICATES(Material.PAPER, "ᴅᴇᴀᴛʜ ᴄᴇʀᴛɪғɪᴄᴀᴛᴇs"),
-    INVENTORY_PETS(Material.GHAST_SPAWN_EGG, "ɪɴᴠᴇɴᴛᴏʀʏ ᴘᴇᴛs"),
-    COSMIC_CLIENT(Material.PAINTING, "ᴄᴏsᴍɪᴄ ᴄʟɪᴇɴᴛ"),
-    ITEM_SKINS(Material.ENDER_EYE, "ɪᴛᴇᴍ sᴋɪɴs");
+    GOLDEN_APPLES(Material.ENCHANTED_GOLDEN_APPLE, "ɢᴏʟᴅᴇɴ ᴀᴘᴘʟᴇs", true),
+    MCMMO(Material.DIAMOND_AXE, "ᴍᴄᴍᴍᴏ", true),
+    POTIONS(Material.BREWING_STAND, "ᴘᴏᴛɪᴏɴs", true),
+    BOWS(Material.BOW, "ʙᴏᴡs", true),
+    HEALING(Material.GHAST_TEAR, "ʜᴇᴀʟɪɴɢ", true),
+    FOOD_LOSS(Material.COOKED_BEEF, "ғᴏᴏᴅ ʟᴏss", true),
+    ENDER_PEARLS(Material.ENDER_PEARL, "ᴇɴᴅᴇʀ ᴘᴇᴀʀʟs", true),
+    RISK_INVENTORY(Material.CHEST, "ʀɪsᴋ ɪɴᴠᴇɴᴛᴏʀʏ", false),
+    ARMOR(Material.DIAMOND_CHESTPLATE, "ᴀʀᴍᴏʀ", true),
+    WEAPONS(Material.DIAMOND_SWORD, "ᴡᴇᴀᴘᴏɴs", true),
+    SLASHFIX(Material.ANVIL, "/ғɪx", true),
+    SLASHFIX_ALL(Material.ANVIL, "/ғɪx ᴀʟʟ", true),
+    SLASHFLY(Material.FEATHER, "/ғʟʏ", false),
+    COSMIC_ENVOY(Material.FIREWORK_ROCKET, "ᴄᴏsᴍɪᴄ ᴇɴᴠᴏʏ", false),
+    DEATH_CERTIFICATES(Material.PAPER, "ᴅᴇᴀᴛʜ ᴄᴇʀᴛɪғɪᴄᴀᴛᴇs", true),
+    INVENTORY_PETS(Material.GHAST_SPAWN_EGG, "ɪɴᴠᴇɴᴛᴏʀʏ ᴘᴇᴛs", false),
+    COSMIC_CLIENT(Material.PAINTING, "ᴄᴏsᴍɪᴄ ᴄʟɪᴇɴᴛ", true),
+    ITEM_SKINS(Material.ENDER_EYE, "ɪᴛᴇᴍ sᴋɪɴs", true);
 
     private final Material material;
     private final String displayName;
+    private final boolean defaultValue;
 
-    DuelSetting(Material material, String displayName) {
+    DuelSetting(Material material, String displayName, boolean defaultValue) {
         this.material = material;
         this.displayName = displayName;
+        this.defaultValue = defaultValue;
     }
 }

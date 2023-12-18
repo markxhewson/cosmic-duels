@@ -25,6 +25,7 @@ public class EventsManager {
         addListener(new ItemConsumeListener(plugin));
         addListener(new ProjectileLaunchListener(plugin));
         addListener(new FakeEntityDamageListener(plugin));
+        addListener(new CommandBlockListener(plugin));
 
         loadListeners();
     }
@@ -33,21 +34,8 @@ public class EventsManager {
         getListeners().add(listener);
     }
 
-    public void removeListener(Listener listener) {
-        getListeners().remove(listener);
-    }
-
-    public void reloadListeners() {
-        getListeners().forEach(HandlerList::unregisterAll);
-        getListeners().forEach(listener -> plugin.getServer().getPluginManager().registerEvents(listener, plugin));
-    }
-
     public void loadListeners() {
         getListeners().forEach(listener -> plugin.getServer().getPluginManager().registerEvents(listener, plugin));
-    }
-
-    public void unloadListeners() {
-        getListeners().forEach(HandlerList::unregisterAll);
     }
 
 }

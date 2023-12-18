@@ -13,6 +13,9 @@ import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
 import tech.markxhewson.duels.util.CC;
 import tech.markxhewson.duels.util.ItemBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class SelectDuelSettingsMenu {
 
@@ -20,6 +23,7 @@ public class SelectDuelSettingsMenu {
     private final DuelGame duelGame;
 
     private final ChestGui menu;
+    private final StaticPane pane = new StaticPane(0, 0, 9, 3);
 
     public SelectDuelSettingsMenu(Duels plugin, DuelGame duelGame) {
         this.plugin = plugin;
@@ -36,7 +40,9 @@ public class SelectDuelSettingsMenu {
     }
 
     private void updateItems() {
-        StaticPane pane = new StaticPane(0, 0, 9, 3);
+        if (!menu.getPanes().isEmpty()) {
+            menu.getPanes().clear();
+        }
 
         int index = 0;
 
@@ -45,37 +51,23 @@ public class SelectDuelSettingsMenu {
             index++;
         }
 
+        List<String> confirmLore = new ArrayList<>();
+        confirmLore.add("");
+
+        for (DuelSetting value : DuelSetting.values()) {
+            confirmLore.add(addSettingLore(value));
+        }
+
+        confirmLore.add("");
+        confirmLore.add("&7&7ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ ᴅᴜᴇʟ.");
+
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 1, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 2, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 3, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                 .setDisplayName("&e&lᴄᴏɴғɪʀᴍ sᴇᴛᴛɪɴɢs")
-                .setLore(
-                        "",
-                        addSettingLore(DuelSetting.GOLDEN_APPLES),
-                        addSettingLore(DuelSetting.MCMMO),
-                        addSettingLore(DuelSetting.POTIONS),
-                        addSettingLore(DuelSetting.BOWS),
-                        addSettingLore(DuelSetting.HEALING),
-                        addSettingLore(DuelSetting.FOOD_LOSS),
-                        addSettingLore(DuelSetting.ENDER_PEARLS),
-                        addSettingLore(DuelSetting.RISK_INVENTORY),
-                        addSettingLore(DuelSetting.ARMOR),
-                        addSettingLore(DuelSetting.WEAPONS),
-                        addSettingLore(DuelSetting.SLASHFIX),
-                        addSettingLore(DuelSetting.SLASHFIX_ALL),
-                        addSettingLore(DuelSetting.SLASHFLY),
-                        addSettingLore(DuelSetting.COSMIC_ENVOY),
-                        addSettingLore(DuelSetting.DEATH_CERTIFICATES),
-                        addSettingLore(DuelSetting.INVENTORY_PETS),
-                        addSettingLore(DuelSetting.COSMIC_CLIENT),
-                        addSettingLore(DuelSetting.ITEM_SKINS),
-                        "",
-                        "&7ᴄʟɪᴄᴋ ᴛᴏ ɢᴏ ᴛᴏ ᴛʜᴇ ᴀʀᴇɴᴀ sᴇʟᴇᴄᴛɪᴏɴ."
-                ).build(), event -> {
-            confirmSettings();
-        }), 4, 2);
+                .setLore(confirmLore).build(), event -> confirmSettings()), 4, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 5, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 6, 2);
@@ -103,7 +95,6 @@ public class SelectDuelSettingsMenu {
     private void toggleDuelSetting(DuelSetting duelSetting) {
         this.duelGame.getSettings().setSetting(duelSetting, !this.duelGame.getSettings().isSettingEnabled(duelSetting));
 
-        menu.getPanes().clear();
         this.updateItems();
 
         menu.update();

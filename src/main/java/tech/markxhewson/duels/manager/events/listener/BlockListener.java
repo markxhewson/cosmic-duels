@@ -6,6 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import tech.markxhewson.duels.Duels;
+import tech.markxhewson.duels.manager.duel.game.DuelGame;
+
 public class BlockListener implements Listener {
 
     private final Duels plugin;
@@ -17,19 +19,25 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
-        if (plugin.getDuelGameManager().findGame(player.getUniqueId()) != null) {
-            event.setCancelled(true);
+        if (duelGame == null) {
+            return;
         }
+
+        event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
-        if (plugin.getDuelGameManager().findGame(player.getUniqueId()) != null) {
-            event.setCancelled(true);
+        if (duelGame == null) {
+            return;
         }
+
+        event.setCancelled(true);
     }
 
 }

@@ -1,10 +1,12 @@
 package tech.markxhewson.duels.manager.arena;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.util.LocationUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,11 +31,15 @@ public class ArenaManager {
                 return;
             }
 
+            List<Location> envoyLocations = plugin.getConfig().getStringList("arenas." + arenaId + ".envoyLocations")
+                    .stream().map(LocationUtil::deserializeLocation).toList();
+
             Arena arena = new Arena(
                     arenaId,
                     plugin.getConfig().getString("arenas." + arenaId + ".name"),
                     LocationUtil.deserializeLocation(plugin.getConfig().getString("arenas." + arenaId + ".spawnOne")),
-                    LocationUtil.deserializeLocation(plugin.getConfig().getString("arenas." + arenaId + ".spawnTwo"))
+                    LocationUtil.deserializeLocation(plugin.getConfig().getString("arenas." + arenaId + ".spawnTwo")),
+                    envoyLocations
             );
 
             addArena(arena);

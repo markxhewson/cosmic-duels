@@ -8,7 +8,7 @@ public class DuelSettings {
 
     public DuelSettings() {
         for (DuelSetting setting : DuelSetting.values()) {
-            settings.put(setting, true);
+            settings.put(setting, setting.isDefaultValue());
         }
     }
 

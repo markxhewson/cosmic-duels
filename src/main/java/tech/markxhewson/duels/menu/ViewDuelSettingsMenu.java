@@ -13,6 +13,9 @@ import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
 import tech.markxhewson.duels.util.CC;
 import tech.markxhewson.duels.util.ItemBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class ViewDuelSettingsMenu {
 
@@ -45,37 +48,23 @@ public class ViewDuelSettingsMenu {
             index++;
         }
 
+        List<String> confirmLore = new ArrayList<>();
+        confirmLore.add("");
+
+        for (DuelSetting value : DuelSetting.values()) {
+            confirmLore.add(addSettingLore(value));
+        }
+
+        confirmLore.add("");
+        confirmLore.add("&7&7ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ ᴅᴜᴇʟ.");
+
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 1, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 2, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 3, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                 .setDisplayName("&e&lᴄᴏɴғɪʀᴍ sᴇᴛᴛɪɴɢs")
-                .setLore(
-                        "",
-                        addSettingLore(DuelSetting.GOLDEN_APPLES),
-                        addSettingLore(DuelSetting.MCMMO),
-                        addSettingLore(DuelSetting.POTIONS),
-                        addSettingLore(DuelSetting.BOWS),
-                        addSettingLore(DuelSetting.HEALING),
-                        addSettingLore(DuelSetting.FOOD_LOSS),
-                        addSettingLore(DuelSetting.ENDER_PEARLS),
-                        addSettingLore(DuelSetting.RISK_INVENTORY),
-                        addSettingLore(DuelSetting.ARMOR),
-                        addSettingLore(DuelSetting.WEAPONS),
-                        addSettingLore(DuelSetting.SLASHFIX),
-                        addSettingLore(DuelSetting.SLASHFIX_ALL),
-                        addSettingLore(DuelSetting.SLASHFLY),
-                        addSettingLore(DuelSetting.COSMIC_ENVOY),
-                        addSettingLore(DuelSetting.DEATH_CERTIFICATES),
-                        addSettingLore(DuelSetting.INVENTORY_PETS),
-                        addSettingLore(DuelSetting.COSMIC_CLIENT),
-                        addSettingLore(DuelSetting.ITEM_SKINS),
-                        "",
-                        "&7ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ ᴅᴜᴇʟ.."
-                ).build(), event -> {
-            confirmSettings();
-        }), 4, 2);
+                .setLore(confirmLore).build(), event -> confirmSettings()), 4, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 5, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 6, 2);
@@ -85,7 +74,7 @@ public class ViewDuelSettingsMenu {
     }
 
     public String addSettingLore(DuelSetting setting) {
-        return CC.translate("&e" + setting.getDisplayName() + ": " + (this.duelGame.getSettings().isSettingEnabled(setting) ? "&a&lᴏɴ" : "&c&lᴏғғ"));
+        return CC.translate("&e" + setting.getDisplayName() + ": " + (this.duelGame.getSettings().isSettingEnabled(setting) ? "&aᴏɴ" : "&cᴏғғ"));
     }
 
     public void addSettingItem(StaticPane pane, DuelSetting setting, int index) {
@@ -98,7 +87,11 @@ public class ViewDuelSettingsMenu {
     }
 
     public void confirmSettings() {
-        this.duelGame.startGame();
+        if (this.duelGame.getSettings().isSettingEnabled(DuelSetting.RISK_INVENTORY)) {
+            this.duelGame.openRiskInventoryMenu();
+        } else {
+            this.duelGame.startGame();
+        }
     }
 
 }

@@ -22,17 +22,22 @@ public class ItemConsumeListener implements Listener {
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
-        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
         ItemStack item = event.getItem();
 
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
+
+        if (duelGame == null) {
+            return;
+        }
+
         if (item.getType() == Material.GOLDEN_APPLE || item.getType() == Material.ENCHANTED_GOLDEN_APPLE) {
-            if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.GOLDEN_APPLES)) {
+            if (!duelGame.getSettings().isSettingEnabled(DuelSetting.GOLDEN_APPLES)) {
                 player.sendMessage(CC.translate("&c&l<!> &cɢᴏʟᴅᴇɴ ᴀᴘᴘʟᴇs ᴀʀᴇ ᴅɪsᴀʙʟᴇᴅ ɪɴ ᴛʜɪs ᴅᴜᴇʟ!"));
                 event.setCancelled(true);
             }
         }
         else if (item.getType() == Material.POTION) {
-            if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.POTIONS)) {
+            if (!duelGame.getSettings().isSettingEnabled(DuelSetting.POTIONS)) {
                 player.sendMessage(CC.translate("&c&l<!> &cᴘᴏᴛɪᴏɴs ᴀʀᴇ ᴅɪsᴀʙʟᴇᴅ ɪɴ ᴛʜɪs ᴅᴜᴇʟ!"));
                 event.setCancelled(true);
             }

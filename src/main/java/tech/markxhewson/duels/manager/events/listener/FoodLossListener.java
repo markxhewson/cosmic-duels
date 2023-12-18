@@ -25,7 +25,11 @@ public class FoodLossListener implements Listener {
 
         DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
-        if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.FOOD_LOSS)) {
+        if (duelGame == null) {
+            return;
+        }
+
+        if (!duelGame.getSettings().isSettingEnabled(DuelSetting.FOOD_LOSS)) {
             event.setCancelled(true);
         }
     }

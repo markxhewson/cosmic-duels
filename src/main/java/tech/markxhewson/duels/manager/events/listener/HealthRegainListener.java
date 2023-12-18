@@ -24,7 +24,11 @@ public class HealthRegainListener implements Listener {
 
         DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
-        if (duelGame != null && !duelGame.getSettings().isSettingEnabled(DuelSetting.HEALING)) {
+        if (duelGame == null) {
+            return;
+        }
+
+        if (!duelGame.getSettings().isSettingEnabled(DuelSetting.HEALING)) {
             event.setCancelled(true);
         }
     }
