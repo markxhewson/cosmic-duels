@@ -26,6 +26,7 @@ public class EventsManager {
         addListener(new ProjectileLaunchListener(plugin));
         addListener(new FakeEntityDamageListener(plugin));
         addListener(new CommandBlockListener(plugin));
+        addListener(new EntityDamageEntityEvent(plugin));
 
         loadListeners();
     }
