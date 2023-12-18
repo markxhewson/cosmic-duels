@@ -54,7 +54,7 @@ public class ViewArenasMenu {
                                 "",
                                 "&7ᴄʟɪᴄᴋ ᴛᴏ sᴘᴇᴄᴛᴀᴛᴇ."
                         )
-                        .build()
+                        .build(), event -> startSpectating((Player) event.getWhoClicked(), arena)
                 ), index++, 1);
             } else {
                 pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS)
@@ -69,6 +69,17 @@ public class ViewArenasMenu {
         }
 
         menu.addPane(pane);
+    }
+
+    public void startSpectating(Player player, Arena arena) {
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(arena.getId());
+
+        if (duelGame == null) {
+            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ ᴀ ᴅᴜᴇʟ!"));
+            return;
+        }
+
+        duelGame.addSpectator(player);
     }
 
 }

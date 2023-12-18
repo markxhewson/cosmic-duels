@@ -15,6 +15,7 @@ import tech.markxhewson.duels.menu.SelectArenaMenu;
 import tech.markxhewson.duels.menu.SelectDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,8 @@ public class DuelGame {
     // player one is always the one who initiated the duel
     private final Player playerOne;
     private final Player playerTwo;
+
+    private final List<Player> spectators = new ArrayList<>();
 
     private final DuelSettings settings = new DuelSettings();
     private Arena arena;
@@ -45,6 +48,15 @@ public class DuelGame {
         this.playerTwo = playerTwo;
 
         openSettingsMenu();
+    }
+
+    public void addSpectator(Player player) {
+        this.spectators.add(player);
+
+        plugin.getDuelGameManager().getPlayerCacheManager().addPlayerCache(player);
+
+        player.teleport(this.getPlayerOne().getLocation());
+        player.setGameMode(GameMode.SPECTATOR);
     }
 
     public void openRiskInventoryMenu() {
@@ -69,10 +81,9 @@ public class DuelGame {
     }
 
     public void startGame() {
-        this.getPlayerOne().teleport(this.getArena().getSpawnOne());
-        this.getPlayerTwo().teleport(this.getArena().getSpawnTwo());
-
         getPlayers().forEach(player -> {
+            plugin.getDuelGameManager().getPlayerCacheManager().addPlayerCache(player);
+
             player.setHealth(20);
             player.setAllowFlight(false);
             player.setFlying(false);
@@ -82,6 +93,9 @@ public class DuelGame {
 
             player.sendTitle(CC.translate("&c&lᴅᴜᴇʟ"), CC.translate("&e&l" + this.getPlayerOne().getName() + " &eᴠs &e&l" + this.getPlayerTwo().getName()));
         });
+
+        this.getPlayerOne().teleport(this.getArena().getSpawnOne());
+        this.getPlayerTwo().teleport(this.getArena().getSpawnTwo());
 
         this.announce("&e&l<!> &eᴛʜᴇ ᴅᴜᴇʟ ᴡɪʟʟ ʙᴇɢɪɴ sʜᴏʀᴛʟʏ...");
         setGameState(GameState.STARTING);
@@ -105,10 +119,10 @@ public class DuelGame {
                 this.announce("&e&l<!> &eᴛʜᴇ ᴅᴜᴇʟ ʜᴀs sᴛᴀʀᴛᴇᴅ!");
             }
             case ENDED -> {
+                this.getPlayers().forEach(player -> plugin.getDuelGameManager().getPlayerCacheManager().restorePlayer(player));
+                this.getSpectators().forEach(player -> plugin.getDuelGameManager().getPlayerCacheManager().restorePlayer(player));
                 this.arena.setInUse(false);
                 this.plugin.getDuelGameManager().removeDuelGame(this);
-
-                // TODO: handle teleporting players back to where they were before duel began (store that)
             }
         }
     }

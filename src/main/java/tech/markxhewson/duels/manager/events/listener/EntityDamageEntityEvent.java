@@ -27,7 +27,6 @@ public class EntityDamageEntityEvent implements Listener {
         }
 
         if (duelGame.getGraceTime() > 0) {
-            player.sendMessage(CC.translate("&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴀᴛᴛᴀᴄᴋ ɪɴ ᴛʜᴇ ɢʀᴀᴄᴇ ᴘᴇʀɪᴏᴅ!"));
             event.setCancelled(true);
         }
     }

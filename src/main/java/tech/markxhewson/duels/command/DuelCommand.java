@@ -4,8 +4,10 @@ import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 import tech.markxhewson.duels.Duels;
+import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.util.Invite;
 import tech.markxhewson.duels.menu.RiskInventoryMenu;
+import tech.markxhewson.duels.menu.ViewArenasMenu;
 import tech.markxhewson.duels.menu.ViewDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
 
@@ -42,6 +44,26 @@ public class DuelCommand {
         viewDuelSettingsMenu.open(player);
 
         plugin.getDuelGameManager().removeInvite(player.getUniqueId());
+    }
+
+    @Subcommand("spectate")
+    public void onDuelSpectate(Player player) {
+        ViewArenasMenu viewArenasMenu = new ViewArenasMenu(plugin);
+        viewArenasMenu.open(player);
+    }
+
+    @Subcommand("end")
+    @CommandPermission("duels.admin.duel.end")
+    public void onDuelEndCommand(Player player) {
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
+
+        if (duelGame == null) {
+            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ ᴀ ᴅᴜᴇʟ!"));
+            return;
+        }
+
+        duelGame.announce(CC.translate("&c&l<!> &c" + player.getName() + " ʜᴀs ᴇɴᴅᴇᴅ ᴛʜᴇ ᴅᴜᴇʟ!"));
+        duelGame.endGame();
     }
 
 }

@@ -1,25 +1,29 @@
 package tech.markxhewson.duels.manager.duel.game;
 
+import lombok.Getter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import tech.markxhewson.duels.Duels;
+import tech.markxhewson.duels.manager.cache.PlayerCacheManager;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.util.Invite;
 import tech.markxhewson.duels.util.CC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter
 public class DuelGameManager {
 
     private final Duels plugin;
+    private final PlayerCacheManager playerCacheManager;
+
     private final List<DuelGame> duelGames = new LinkedList<>();
     private final Map<UUID, Invite> duelInvites = new ConcurrentHashMap<>();
 
     public DuelGameManager(Duels plugin) {
         this.plugin = plugin;
+        this.playerCacheManager = new PlayerCacheManager(plugin);
 
         // check for expired invites every 5s
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::checkExpiredInvites, 0L, 100L);
@@ -36,7 +40,7 @@ public class DuelGameManager {
 
     // find by user uuid
     public DuelGame findGame(UUID uuid) {
-        return duelGames.stream().filter(duelGame -> duelGame.getPlayerOne().getUniqueId().equals(uuid) || duelGame.getPlayerTwo().getUniqueId().equals(uuid)).findFirst().orElse(null);
+        return duelGames.stream().filter(duelGame -> duelGame.getPlayers().stream().map(Entity::getUniqueId).toList().contains(uuid)).findFirst().orElse(null);
     }
 
     // find by arena id
@@ -66,15 +70,23 @@ public class DuelGameManager {
     }
 
     public void checkExpiredInvites() {
-        duelInvites.forEach((uuid, invite) -> {
+        Iterator<Map.Entry<UUID, Invite>> iterator = duelInvites.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, Invite> entry = iterator.next();
+            UUID uuid = entry.getKey();
+            Invite invite = entry.getValue();
+
             if (System.currentTimeMillis() > invite.getTimeExpires()) {
                 Player player = plugin.getServer().getPlayer(uuid);
                 if (player != null) {
                     player.sendMessage(CC.translate("&c<!> ʏᴏᴜʀ ᴅᴜᴇʟ ɪɴᴠɪᴛᴇ ғʀᴏᴍ &f" + invite.getSender().getName() + " &cʜᴀs ᴇxᴘɪʀᴇᴅ."));
                 }
-                duelInvites.remove(uuid);
+
+                iterator.remove();
             }
-        });
+        }
     }
+
 
 }
