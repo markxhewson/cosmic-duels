@@ -21,6 +21,11 @@ public class DuelCommand {
 
     @DefaultFor("duel")
     public void onDuelCommand(Player playerOne, Player playerTwo) {
+        if (playerOne == playerTwo) {
+            playerOne.sendMessage(CC.translate("&c&l<!> &cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴅᴜᴇʟ ʏᴏᴜʀsᴇʟғ!"));
+            return;
+        }
+
         plugin.getDuelGameManager().createDuelGame(playerOne, playerTwo);
     }
 
