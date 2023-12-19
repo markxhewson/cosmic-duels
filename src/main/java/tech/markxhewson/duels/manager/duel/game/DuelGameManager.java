@@ -32,10 +32,12 @@ public class DuelGameManager {
     public void createDuelGame(Player playerOne, Player playerTwo) {
         DuelGame duelGame = new DuelGame(plugin, playerOne, playerTwo);
         duelGames.add(duelGame);
+        plugin.getLogger().info("Created duel game with uuid " + duelGame.getGameUUID());
     }
 
     public void removeDuelGame(DuelGame duelGame) {
         duelGames.remove(duelGame);
+        plugin.getLogger().info("Removed duel game with uuid " + duelGame.getGameUUID());
     }
 
     // find by user uuid

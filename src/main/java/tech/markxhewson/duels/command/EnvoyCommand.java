@@ -17,7 +17,7 @@ public class EnvoyCommand {
 
     // used to manually place envoy locations in the different arenas, for debugging purposes
     @Command({"envoy"})
-    @CommandPermission("duels.admin.envoy")
+    @CommandPermission("duels.admin")
     public void onEnvoyDebugCommand(Player player) {
         plugin.envoyDebug = !plugin.envoyDebug;
         player.sendMessage(CC.translate("&aEnvoy debug mode toggled to &e" + plugin.envoyDebug + "&a."));

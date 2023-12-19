@@ -40,10 +40,6 @@ public class SelectDuelSettingsMenu {
     }
 
     private void updateItems() {
-        if (!menu.getPanes().isEmpty()) {
-            menu.getPanes().clear();
-        }
-
         int index = 0;
 
         for (DuelSetting value : DuelSetting.values()) {

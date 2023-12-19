@@ -10,6 +10,7 @@ import tech.markxhewson.duels.manager.arena.Arena;
 import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
 import tech.markxhewson.duels.manager.duel.setting.DuelSettings;
 import tech.markxhewson.duels.manager.duel.state.GameState;
+import tech.markxhewson.duels.manager.reward.DuelReward;
 import tech.markxhewson.duels.menu.RiskInventoryMenu;
 import tech.markxhewson.duels.menu.SelectArenaMenu;
 import tech.markxhewson.duels.menu.SelectDuelSettingsMenu;
@@ -29,6 +30,7 @@ public class DuelGame {
     // player one is always the one who initiated the duel
     private final Player playerOne;
     private final Player playerTwo;
+    private Player winner;
 
     private final List<Player> spectators = new ArrayList<>();
 
@@ -146,6 +148,17 @@ public class DuelGame {
                     endGame();
                 }
             }
+        }
+    }
+
+    public void setWinner(Player player) {
+        plugin.getDuelRewardManager().addReward(this.getGameUUID(), player.getUniqueId());
+        this.winner = player;
+
+        if (getSettings().isSettingEnabled(DuelSetting.RISK_INVENTORY)) {
+            player.sendMessage(CC.translate("&e&l<!> &eʏᴏᴜ ʜᴀᴠᴇ ᴡᴏɴ ᴛʜᴇ ᴅᴜᴇʟ, ʏᴏᴜ ʜᴀᴠᴇ ʀᴇᴡᴀʀᴅs ɪɴ /ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs!"));
+        } else {
+            player.sendMessage("&e&l<!> &eʏᴏᴜ ʜᴀᴠᴇ ᴡᴏɴ ᴛʜᴇ ᴅᴜᴇʟ!");
         }
     }
 

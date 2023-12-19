@@ -6,13 +6,13 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.util.Invite;
+import tech.markxhewson.duels.menu.DuelRewardsMenu;
 import tech.markxhewson.duels.menu.RiskInventoryMenu;
 import tech.markxhewson.duels.menu.ViewArenasMenu;
 import tech.markxhewson.duels.menu.ViewDuelSettingsMenu;
 import tech.markxhewson.duels.util.CC;
 
 @Command("duel")
-@CommandPermission("duels.player.duel")
 public class DuelCommand {
 
     private final Duels plugin;
@@ -46,6 +46,17 @@ public class DuelCommand {
         plugin.getDuelGameManager().removeInvite(player.getUniqueId());
     }
 
+    @Subcommand("rewards")
+    public void onDuelRewardsCommand(Player player) {
+        if (plugin.getDuelRewardManager().getReward(player.getUniqueId()) == null) {
+            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs!"));
+            return;
+        }
+
+        DuelRewardsMenu duelRewardsMenu = new DuelRewardsMenu(plugin, plugin.getDuelRewardManager().getReward(player.getUniqueId()));
+        duelRewardsMenu.open(player);
+    }
+
     @Subcommand("spectate")
     public void onDuelSpectate(Player player) {
         ViewArenasMenu viewArenasMenu = new ViewArenasMenu(plugin);
@@ -53,7 +64,7 @@ public class DuelCommand {
     }
 
     @Subcommand("end")
-    @CommandPermission("duels.admin.duel.end")
+    @CommandPermission("duels.admin")
     public void onDuelEndCommand(Player player) {
         DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 

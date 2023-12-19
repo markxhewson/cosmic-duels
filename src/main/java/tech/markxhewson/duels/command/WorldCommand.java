@@ -17,7 +17,7 @@ public class WorldCommand {
 
     // used to easily get to arena world for modifications
     @Command({"world"})
-    @CommandPermission("duels.admin.world")
+    @CommandPermission("duels.admin")
     public void onWorldCommand(Player player, String worldName) {
         World world = plugin.getServer().getWorld(worldName);
 

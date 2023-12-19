@@ -79,6 +79,11 @@ public class ViewArenasMenu {
             return;
         }
 
+        if (plugin.getDuelGameManager().findGame(player.getUniqueId()) != null) {
+            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ɪɴ ᴀ ᴅᴜᴇʟ!"));
+            return;
+        }
+
         duelGame.addSpectator(player);
     }
 

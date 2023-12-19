@@ -5,6 +5,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +14,10 @@ import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.util.CC;
 import tech.markxhewson.duels.util.ItemBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RiskInventoryMenu {
 
@@ -24,6 +29,8 @@ public class RiskInventoryMenu {
 
     private final int[] playerOneSlots = { 1, 2, 3, 10, 11, 12, 19, 20, 21 };
     private final int[] playerTwoSlots = { 5, 6, 7, 14, 15, 16, 23, 24, 25 };
+    private final List<ItemStack> playerOneItems = new ArrayList<>();
+    private final List<ItemStack> playerTwoItems = new ArrayList<>();
 
     private boolean countdownActive = false;
     private int confirmCountdown = 5;
@@ -42,6 +49,10 @@ public class RiskInventoryMenu {
         menu.setOnGlobalClick(event -> event.setCancelled(true));
         menu.setOnTopClick(this::removeItem);
         menu.setOnBottomClick(this::addItem);
+        menu.setOnClose(event -> {
+            plugin.getDuelGameManager().removeDuelGame(duelGame);
+            menu.getViewers().forEach(HumanEntity::closeInventory);
+        });
 
         updateItems();
     }
@@ -85,6 +96,12 @@ public class RiskInventoryMenu {
             return;
         }
 
+        if (player.getName().equals(duelGame.getPlayerOne().getName())) {
+            playerOneItems.add(item);
+        } else {
+            playerTwoItems.add(item);
+        }
+
         pane.addItem(new GuiItem(item), Slot.fromIndex(slot));
         player.getInventory().remove(item);
 
@@ -102,6 +119,12 @@ public class RiskInventoryMenu {
         if (!doesSlotBelongToPlayer(player, event.getSlot())) {
             player.sendMessage(CC.translate("&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ʀᴇᴍᴏᴠᴇ ᴀɴ ɪᴛᴇᴍ ғʀᴏᴍ ʏᴏᴜʀ ᴏᴡɴ ʀɪsᴋ ɪɴᴠᴇɴᴛᴏʀʏ."));
             return;
+        }
+
+        if (player.getName().equals(duelGame.getPlayerOne().getName())) {
+            playerOneItems.remove(item);
+        } else {
+            playerTwoItems.remove(item);
         }
 
         pane.removeItem(Slot.fromIndex(event.getSlot()));
@@ -152,14 +175,13 @@ public class RiskInventoryMenu {
         updateMenu();
 
         this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::handleCountdown, 0L, 20L);
-
-       // TODO: handle storing items
     }
 
     public void handleCountdown() {
         if (this.confirmCountdown <= 0) {
             cancelCountdown();
             this.duelGame.startGame();
+            saveItems();
         } else {
             this.countdownActive = true;
             this.confirmCountdown--;
@@ -178,5 +200,14 @@ public class RiskInventoryMenu {
     public void updateMenu() {
         updateItems();
         menu.update();
+    }
+
+    public void saveItems() {
+        List<ItemStack> rewards = new ArrayList<>();
+
+        rewards.addAll(playerOneItems);
+        rewards.addAll(playerTwoItems);
+
+        plugin.getDuelRewardManager().addPendingReward(duelGame, rewards);
     }
 }

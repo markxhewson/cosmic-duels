@@ -1,7 +1,6 @@
 package tech.markxhewson.duels.manager.events;
 
 import lombok.Getter;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.events.listener.*;
@@ -27,6 +26,7 @@ public class EventsManager {
         addListener(new FakeEntityDamageListener(plugin));
         addListener(new CommandBlockListener(plugin));
         addListener(new EntityDamageEntityEvent(plugin));
+        addListener(new EntityAttackEntityListener(plugin));
 
         loadListeners();
     }

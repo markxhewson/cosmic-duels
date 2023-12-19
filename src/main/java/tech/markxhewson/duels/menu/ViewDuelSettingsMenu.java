@@ -6,6 +6,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
@@ -30,7 +31,6 @@ public class ViewDuelSettingsMenu {
 
         this.menu = new ChestGui(3, "Duel Settings");
         menu.setOnGlobalClick(event -> event.setCancelled(true));
-
         updateItems();
     }
 
