@@ -25,6 +25,7 @@ public final class Duels extends JavaPlugin {
     private ArenaManager arenaManager;
     private ArenaWorldManager arenaWorldManager;
 
+    public String envoyArenaName = "grasslands";
     public boolean envoyDebug = false;
 
     @Override

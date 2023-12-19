@@ -1,6 +1,7 @@
 package tech.markxhewson.duels.manager.events.listener;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -22,14 +23,20 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && plugin.envoyDebug) {
+            Player player = event.getPlayer();
             Block block = event.getClickedBlock();
 
-            List<String> locations = plugin.getConfig().getStringList("arenas.grasslands.envoyLocations");
+            if (block == null) {
+                return;
+            }
+
+            List<String> locations = plugin.getConfig().getStringList("arenas." + plugin.envoyArenaName + ".envoyLocations");
             locations.add(LocationUtil.serializeLocation(block.getLocation()));
 
-            plugin.getConfig().set("arenas.grasslands.envoyLocations", locations);
+            plugin.getConfig().set("arenas." + plugin.envoyArenaName + ".envoyLocations", locations);
             plugin.saveConfig();
-            event.getPlayer().sendMessage("Added envoy location at " + LocationUtil.serializeLocation(block.getLocation()));
+
+            player.sendMessage("Added envoy location for arena " + plugin.envoyArenaName + " at " + LocationUtil.serializeLocation(block.getLocation()));
         }
     }
 
