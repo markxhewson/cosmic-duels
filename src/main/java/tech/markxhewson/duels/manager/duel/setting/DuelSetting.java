@@ -21,7 +21,7 @@ public enum DuelSetting {
     COSMIC_ENVOY(Material.FIREWORK_ROCKET, "ᴄᴏsᴍɪᴄ ᴇɴᴠᴏʏ", false),
     DEATH_CERTIFICATES(Material.PAPER, "ᴅᴇᴀᴛʜ ᴄᴇʀᴛɪғɪᴄᴀᴛᴇs", true),
     INVENTORY_PETS(Material.GHAST_SPAWN_EGG, "ɪɴᴠᴇɴᴛᴏʀʏ ᴘᴇᴛs", false),
-    COSMIC_CLIENT(Material.PAINTING, "ᴄᴏsᴍɪᴄ ᴄʟɪᴇɴᴛ", true),
+    ALPINE_CLIENT(Material.PAINTING, "ᴀʟᴘɪɴᴇ ᴄʟɪᴇɴᴛ", true),
     ITEM_SKINS(Material.ENDER_EYE, "ɪᴛᴇᴍ sᴋɪɴs", true);
 
     private final Material material;

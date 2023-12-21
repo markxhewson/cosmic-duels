@@ -1,4 +1,4 @@
-name: Duels
+name: CosmicDuels
 version: '${project.version}'
 main: tech.markxhewson.duels.Duels
 api-version: '1.20'

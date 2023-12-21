@@ -30,7 +30,7 @@ public class DuelRewardsMenu {
         this.plugin = plugin;
         this.duelReward = duelReward;
 
-        this.menu = new ChestGui(3, "Your Duel Rewards");
+        this.menu = new ChestGui(3, "ʏᴏᴜʀ ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs");
         this.pane = new StaticPane(0, 0, 9, 3);
         menu.setOnGlobalClick(event -> event.setCancelled(true));
 

@@ -1,11 +1,15 @@
 package tech.markxhewson.duels.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.util.Invite;
+import tech.markxhewson.duels.manager.reward.DuelReward;
 import tech.markxhewson.duels.menu.DuelRewardsMenu;
 import tech.markxhewson.duels.menu.RiskInventoryMenu;
 import tech.markxhewson.duels.menu.ViewArenasMenu;
@@ -24,7 +28,21 @@ public class DuelCommand {
     @DefaultFor("duel")
     public void onDuelCommand(Player playerOne, Player playerTwo) {
         if (playerOne == playerTwo) {
-            playerOne.sendMessage(CC.translate("&c&l<!> &cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴅᴜᴇʟ ʏᴏᴜʀsᴇʟғ!"));
+            playerOne.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴅᴜᴇʟ ʏᴏᴜʀsᴇʟғ!"));
+            return;
+        }
+
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(playerOne.getUniqueId());
+
+        if (duelGame != null) {
+            playerOne.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ɪɴ ᴀ ᴅᴜᴇʟ!"));
+            return;
+        }
+
+        DuelReward duelReward = plugin.getDuelRewardManager().getReward(playerOne.getUniqueId());
+
+        if (duelReward != null) {
+            playerOne.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ᴄᴀɴɴᴏᴛ sᴛᴀʀᴛ ᴀ ᴅᴜᴇʟ ʙᴇғᴏʀᴇ ᴇᴍᴘᴛʏɪɴɢ ʏᴏᴜʀ ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs ᴍᴇɴᴜ!"));
             return;
         }
 
@@ -36,7 +54,7 @@ public class DuelCommand {
         Invite invite = plugin.getDuelGameManager().getInvite(player.getUniqueId());
 
         if (invite == null) {
-            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴘᴇɴᴅɪɴɢ ᴅᴜᴇʟ ɪɴᴠɪᴛᴇs."));
+            player.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴘᴇɴᴅɪɴɢ ᴅᴜᴇʟ ɪɴᴠɪᴛᴇs."));
             return;
         }
 
@@ -49,7 +67,7 @@ public class DuelCommand {
     @Subcommand("rewards")
     public void onDuelRewardsCommand(Player player) {
         if (plugin.getDuelRewardManager().getReward(player.getUniqueId()) == null) {
-            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs!"));
+            player.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴅᴜᴇʟ ʀᴇᴡᴀʀᴅs!"));
             return;
         }
 
@@ -63,17 +81,41 @@ public class DuelCommand {
         viewArenasMenu.open(player);
     }
 
+    @Subcommand("leave")
+    public void onDuelLeave(Player player) {
+        DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
+
+        if (duelGame == null) {
+            DuelGame isSpectating = plugin.getDuelGameManager().isSpectating(player.getUniqueId());
+
+            if (isSpectating == null) {
+                player.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ᴀʀᴇ ɴᴏᴛ sᴘᴇᴄᴛᴀᴛɪɴɢ ᴀ ᴅᴜᴇʟ!"));
+                return;
+            }
+
+            World world = Bukkit.getWorld(plugin.getConfig().getString("defaultWorld"));
+
+            if (world == null) {
+                return;
+            }
+
+            isSpectating.removeSpectator(player);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.teleport(world.getSpawnLocation());
+        }
+    }
+
     @Subcommand("end")
     @CommandPermission("duels.admin")
     public void onDuelEndCommand(Player player) {
         DuelGame duelGame = plugin.getDuelGameManager().findGame(player.getUniqueId());
 
         if (duelGame == null) {
-            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ ᴀ ᴅᴜᴇʟ!"));
+            player.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ ᴀ ᴅᴜᴇʟ!"));
             return;
         }
 
-        duelGame.announce(CC.translate("&c&l<!> &c" + player.getName() + " ʜᴀs ᴇɴᴅᴇᴅ ᴛʜᴇ ᴅᴜᴇʟ!"));
+        duelGame.announce(CC.translate("&c&l(!) &c" + player.getName() + " ʜᴀs ᴇɴᴅᴇᴅ ᴛʜᴇ ᴅᴜᴇʟ!"));
         duelGame.endGame();
     }
 

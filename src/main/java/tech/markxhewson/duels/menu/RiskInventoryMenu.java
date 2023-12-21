@@ -49,10 +49,6 @@ public class RiskInventoryMenu {
         menu.setOnGlobalClick(event -> event.setCancelled(true));
         menu.setOnTopClick(this::removeItem);
         menu.setOnBottomClick(this::addItem);
-        menu.setOnClose(event -> {
-            plugin.getDuelGameManager().removeDuelGame(duelGame);
-            menu.getViewers().forEach(HumanEntity::closeInventory);
-        });
 
         updateItems();
     }
@@ -62,19 +58,27 @@ public class RiskInventoryMenu {
     }
 
     private void updateItems() {
-        pane.addItem(new GuiItem(new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build()), 0, 0);
+        pane.addItem(new GuiItem(new ItemBuilder(playerOneConfirmed ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE)
+                        .setDisplayName(playerOneConfirmed ? "&asᴛᴀᴛᴇ: ᴄᴏɴғɪʀᴍᴇᴅ &7(ᴄʟɪᴄᴋ ᴛᴏ ᴄᴀɴᴄᴇʟ)" : "&csᴛᴀᴛᴇ: ɴᴏᴛ ᴄᴏɴғɪʀᴍᴇᴅ &7(ᴄʟɪᴄᴋ ᴛᴏ ᴄᴏɴғɪʀᴍ)")
+                        .build(), event -> confirmPlayerOne((Player) event.getWhoClicked())
+                ), 0, 0
+        );
+
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 0, 1);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 0, 2);
 
         for (int i = 0; i < 3; i++) {
             pane.addItem(new GuiItem(new ItemBuilder(!countdownActive ? Material.GRAY_STAINED_GLASS_PANE : (confirmCountdown >= 4 ? Material.GREEN_STAINED_GLASS_PANE : (confirmCountdown >= 2 ? Material.YELLOW_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE)))
-                    .setDisplayName(countdownActive ? "&6" + confirmCountdown + "s &7(Click to cancel)" : "&6Click to confirm")
-                    .build(), event -> {
-                confirmItems((Player) event.getWhoClicked());
-            }), 4, i);
+                    .setDisplayName(countdownActive ? "&6" + confirmCountdown + "s" : " ")
+                    .build()), 4, i);
         }
 
-        pane.addItem(new GuiItem(new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build()), 8, 0);
+        pane.addItem(new GuiItem(new ItemBuilder(playerTwoConfirmed ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE)
+                .setDisplayName(playerTwoConfirmed ? "&asᴛᴀᴛᴇ: ᴄᴏɴғɪʀᴍᴇᴅ" : "&csᴛᴀᴛᴇ: ɴᴏᴛ ᴄᴏɴғɪʀᴍᴇᴅ")
+                .build(), event -> confirmPlayerTwo((Player) event.getWhoClicked())
+                ), 8, 0
+        );
+
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 8, 1);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 8, 2);
 
@@ -155,19 +159,35 @@ public class RiskInventoryMenu {
         return false;
     }
 
-    public void confirmItems(Player player) {
-        if (player.getName().equals(duelGame.getPlayerOne().getName())) {
-            playerOneConfirmed = true;
-        } else {
-            playerTwoConfirmed = true;
-        }
-
-        if (!playerOneConfirmed || !playerTwoConfirmed) {
+    public void confirmPlayerOne(Player player) {
+        if (!player.getName().equals(duelGame.getPlayerOne().getName())) {
+            player.sendMessage(CC.translate("&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄᴏɴғɪʀᴍ ᴛʜᴇ ᴏᴛʜᴇʀ ᴘʟᴀʏᴇʀ's ʀɪsᴋ ɪɴᴠᴇɴᴛᴏʀʏ."));
             return;
         }
 
+        this.playerOneConfirmed = !this.playerOneConfirmed;
+        confirmItems();
+        updateMenu();
+    }
+
+    public void confirmPlayerTwo(Player player) {
+        if (!player.getName().equals(duelGame.getPlayerTwo().getName())) {
+            player.sendMessage(CC.translate("&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄᴏɴғɪʀᴍ ᴛʜᴇ ᴏᴛʜᴇʀ ᴘʟᴀʏᴇʀ's ʀɪsᴋ ɪɴᴠᴇɴᴛᴏʀʏ."));
+            return;
+        }
+
+        this.playerTwoConfirmed = !this.playerTwoConfirmed;
+        confirmItems();
+        updateMenu();
+    }
+
+    public void confirmItems() {
         if (this.countdownActive) {
             cancelCountdown();
+            return;
+        }
+
+        if (!playerOneConfirmed || !playerTwoConfirmed) {
             return;
         }
 

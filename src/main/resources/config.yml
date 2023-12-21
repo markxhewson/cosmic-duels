@@ -35,4 +35,5 @@ arenas:
   sovereign:
     active: false
 
+defaultWorld: "world"
 data: []

@@ -56,6 +56,14 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>alpine-public</id>
+      <url>https://lib.alpn.cloud/alpine-public</url>
+    </repository>
+    <repository>
+      <id>aikar</id>
+      <url>https://repo.aikar.co/content/groups/aikar/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>

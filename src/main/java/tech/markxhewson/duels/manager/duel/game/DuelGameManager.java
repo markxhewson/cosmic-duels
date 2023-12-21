@@ -29,9 +29,12 @@ public class DuelGameManager {
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::checkExpiredInvites, 0L, 100L);
     }
 
+    public DuelGame isSpectating(UUID uuid) {
+        return duelGames.stream().filter(duelGame -> duelGame.getSpectators().stream().map(Entity::getUniqueId).toList().contains(uuid)).findFirst().orElse(null);
+    }
+
     public void createDuelGame(Player playerOne, Player playerTwo) {
         DuelGame duelGame = new DuelGame(plugin, playerOne, playerTwo);
-        duelGames.add(duelGame);
         plugin.getLogger().info("Created duel game with uuid " + duelGame.getGameUUID());
     }
 

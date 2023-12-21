@@ -33,6 +33,8 @@ public class PlayerCacheManager {
         player.teleport(cache.getLocation());
         player.getInventory().setContents(cache.getInventoryContents());
         player.getInventory().setArmorContents(cache.getArmorContents());
+        player.setHealth(20);
+        player.setFoodLevel(20);
         this.removePlayerCache(player.getUniqueId());
     }
 

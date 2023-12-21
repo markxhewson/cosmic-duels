@@ -22,7 +22,7 @@ public class ViewArenasMenu {
     public ViewArenasMenu(Duels plugin) {
         this.plugin = plugin;
 
-        this.menu = new ChestGui(3, "Arenas");
+        this.menu = new ChestGui(3, "ᴀʀᴇɴᴀs");
         menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
@@ -73,11 +73,6 @@ public class ViewArenasMenu {
 
     public void startSpectating(Player player, Arena arena) {
         DuelGame duelGame = plugin.getDuelGameManager().findGame(arena.getId());
-
-        if (duelGame == null) {
-            player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ ᴀ ᴅᴜᴇʟ!"));
-            return;
-        }
 
         if (plugin.getDuelGameManager().findGame(player.getUniqueId()) != null) {
             player.sendMessage(CC.translate("&c<!> ʏᴏᴜ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ɪɴ ᴀ ᴅᴜᴇʟ!"));

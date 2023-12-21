@@ -8,6 +8,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
@@ -29,7 +30,7 @@ public class ViewDuelSettingsMenu {
         this.plugin = plugin;
         this.duelGame = duelGame;
 
-        this.menu = new ChestGui(3, "Duel Settings");
+        this.menu = new ChestGui(3, "ᴅᴜᴇʟ sᴇᴛᴛɪɴɢs");
         menu.setOnGlobalClick(event -> event.setCancelled(true));
         updateItems();
     }
@@ -64,7 +65,7 @@ public class ViewDuelSettingsMenu {
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                 .setDisplayName("&e&lᴄᴏɴғɪʀᴍ sᴇᴛᴛɪɴɢs")
-                .setLore(confirmLore).build(), event -> confirmSettings()), 4, 2);
+                .setLore(confirmLore).build(), this::confirmSettings), 4, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 5, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 6, 2);
@@ -86,7 +87,7 @@ public class ViewDuelSettingsMenu {
         ), Slot.fromIndex(index));
     }
 
-    public void confirmSettings() {
+    public void confirmSettings(InventoryClickEvent event) {
         if (this.duelGame.getSettings().isSettingEnabled(DuelSetting.RISK_INVENTORY)) {
             this.duelGame.openRiskInventoryMenu();
         } else {

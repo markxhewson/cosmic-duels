@@ -42,5 +42,9 @@ public class DuelRewardManager {
         pendingDuelRewards.remove(gameUuid);
     }
 
+    public void updateReward(UUID winnerUuid, DuelReward duelReward) {
+        duelRewards.put(winnerUuid, duelReward);
+    }
+
 
 }

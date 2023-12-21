@@ -27,6 +27,7 @@ public class EventsManager {
         addListener(new CommandBlockListener(plugin));
         addListener(new EntityDamageEntityEvent(plugin));
         addListener(new EntityAttackEntityListener(plugin));
+        addListener(new DuelConnectionListener(plugin));
 
         loadListeners();
     }

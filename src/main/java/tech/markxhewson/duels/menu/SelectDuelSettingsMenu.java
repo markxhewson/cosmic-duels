@@ -7,6 +7,7 @@ import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import tech.markxhewson.duels.Duels;
 import tech.markxhewson.duels.manager.duel.game.DuelGame;
 import tech.markxhewson.duels.manager.duel.setting.DuelSetting;
@@ -29,7 +30,7 @@ public class SelectDuelSettingsMenu {
         this.plugin = plugin;
         this.duelGame = duelGame;
 
-        this.menu = new ChestGui(3, "Duel Settings");
+        this.menu = new ChestGui(3, "ᴅᴜᴇʟ sᴇᴛᴛɪɴɢs");
         menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
@@ -63,7 +64,7 @@ public class SelectDuelSettingsMenu {
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                 .setDisplayName("&e&lᴄᴏɴғɪʀᴍ sᴇᴛᴛɪɴɢs")
-                .setLore(confirmLore).build(), event -> confirmSettings()), 4, 2);
+                .setLore(confirmLore).build(), this::confirmSettings), 4, 2);
 
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 5, 2);
         pane.addItem(new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build()), 6, 2);
@@ -96,7 +97,7 @@ public class SelectDuelSettingsMenu {
         menu.update();
     }
 
-    public void confirmSettings() {
+    public void confirmSettings(InventoryClickEvent event) {
         this.duelGame.openArenaSelectionMenu();
     }
 

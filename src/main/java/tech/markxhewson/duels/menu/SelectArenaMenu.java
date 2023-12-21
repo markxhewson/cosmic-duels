@@ -27,7 +27,7 @@ public class SelectArenaMenu {
         this.plugin = plugin;
         this.duelGame = duelGame;
 
-        this.menu = new ChestGui(3, "Arena Selection");
+        this.menu = new ChestGui(3, "ᴀʀᴇɴᴀ sᴇʟᴇᴄᴛɪᴏɴ");
         menu.setOnGlobalClick(event -> event.setCancelled(true));
 
         updateItems();
