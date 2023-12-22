@@ -1,10 +1,11 @@
 package tech.markxhewson.duels;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 import tech.markxhewson.duels.command.DuelCommand;
-import tech.markxhewson.duels.command.EnvoyCommand;
 import tech.markxhewson.duels.command.WorldCommand;
 import tech.markxhewson.duels.manager.events.EventsManager;
 import tech.markxhewson.duels.manager.arena.ArenaManager;
@@ -12,7 +13,12 @@ import tech.markxhewson.duels.manager.duel.game.DuelGameManager;
 import tech.markxhewson.duels.manager.reward.DuelRewardManager;
 import tech.markxhewson.duels.manager.world.ArenaWorldManager;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Getter
+@Setter
 public final class Duels extends JavaPlugin {
 
     @Getter
@@ -25,7 +31,8 @@ public final class Duels extends JavaPlugin {
     private ArenaManager arenaManager;
     private ArenaWorldManager arenaWorldManager;
 
-    public String envoyArenaName = "grasslands";
+    private List<UUID> debugPlayers = new ArrayList<>();
+    private String debugArenaName = "grasslands";
     public boolean envoyDebug = false;
 
     @Override
@@ -51,7 +58,6 @@ public final class Duels extends JavaPlugin {
 
     void loadCommands() {
         commandHandler.register(new WorldCommand(this));
-        commandHandler.register(new EnvoyCommand(this));
         commandHandler.register(new DuelCommand(this));
     }
 

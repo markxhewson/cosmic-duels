@@ -79,6 +79,10 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
+        <repository>
+            <id>Alpine Public</id>
+            <url>https://lib.alpn.cloud/alpine-public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -113,6 +117,12 @@
             <groupId>com.gmail.nossr50.mcMMO</groupId>
             <artifactId>mcMMO</artifactId>
             <version>2.1.226</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alpineclient</groupId>
+            <artifactId>api-plugin</artifactId>
+            <version>1.1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -1,5 +1,6 @@
 package tech.markxhewson.duels.manager.events.listener;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,7 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import tech.markxhewson.duels.Duels;
+import tech.markxhewson.duels.util.CC;
 import tech.markxhewson.duels.util.LocationUtil;
 
 import java.util.List;
@@ -22,22 +25,63 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && plugin.envoyDebug) {
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && plugin.getDebugPlayers().contains(player.getUniqueId())) {
             Block block = event.getClickedBlock();
 
             if (block == null) {
                 return;
             }
 
-            List<String> locations = plugin.getConfig().getStringList("arenas." + plugin.envoyArenaName + ".envoyLocations");
-            locations.add(LocationUtil.serializeLocation(block.getLocation()));
+            if (plugin.isEnvoyDebug()) {
+                addEnvoyLocation(block);
+                player.sendMessage(CC.translate("&a&l(!) &aᴇɴᴠᴏʏ ʟᴏᴄᴀᴛɪᴏɴ ᴀᴅᴅᴇᴅ ғᴏʀ " + plugin.getDebugArenaName() + "."));
+                return;
+            }
 
-            plugin.getConfig().set("arenas." + plugin.envoyArenaName + ".envoyLocations", locations);
-            plugin.saveConfig();
-
-            player.sendMessage("Added envoy location for arena " + plugin.envoyArenaName + " at " + LocationUtil.serializeLocation(block.getLocation()));
+            return;
         }
+
+        if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getHand() == EquipmentSlot.HAND && plugin.getDebugPlayers().contains(player.getUniqueId())) {
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            switch (item.getType()) {
+                case DIAMOND -> {
+                    Location location = player.getLocation();
+                    plugin.getConfig().set("arenas." + plugin.getDebugArenaName() + ".spawnOne", LocationUtil.serializeLocation(location));
+                    player.sendMessage(CC.translate("&a&l(!) &asᴘᴀᴡɴ ᴏɴᴇ sᴇᴛ ғᴏʀ " + plugin.getDebugArenaName() + "."));
+
+                    // debug msgs
+                    plugin.getServer().broadcastMessage("original val: " + plugin.getConfig().getString("arenas." + plugin.getDebugArenaName() + ".spawnOne"));
+                    plugin.getServer().broadcastMessage("to be updated val: " + LocationUtil.serializeLocation(location));
+                }
+                case EMERALD -> {
+                    Location location = player.getLocation();
+                    plugin.getConfig().set("arenas." + plugin.getDebugArenaName() + ".spawnTwo", LocationUtil.serializeLocation(location));
+                    player.sendMessage(CC.translate("&a&l(!) &asᴘᴀᴡɴ ᴛᴡᴏ sᴇᴛ ғᴏʀ " + plugin.getDebugArenaName() + "."));
+                }
+                case NETHER_STAR -> {
+                    Location location = player.getLocation();
+                    plugin.getConfig().set("arenas." + plugin.getDebugArenaName() + ".center", LocationUtil.serializeLocation(location));
+                    player.sendMessage(CC.translate("&a&l(!) &acᴇɴᴛᴇʀ sᴇᴛ ғᴏʀ " + plugin.getDebugArenaName() + "."));
+                }
+                default -> {
+                    player.sendMessage(CC.translate("&c&l(!) &cYou must be holding a diamond &7(spawnOne)&c, emerald &7(spawnTwo)&c, or nether star &7(center) &cto use this command."));
+                }
+            }
+
+            plugin.saveConfig();
+            plugin.getServer().broadcastMessage("new val: " + plugin.getConfig().getString("arenas." + plugin.getDebugArenaName() + ".spawnOne"));
+        }
+    }
+
+    public void addEnvoyLocation(Block block) {
+        List<String> locations = plugin.getConfig().getStringList("arenas." + plugin.getDebugArenaName() + ".envoyLocations");
+        locations.add(LocationUtil.serializeLocation(block.getLocation()));
+
+        plugin.getConfig().set("arenas." + plugin.getDebugArenaName() + ".envoyLocations", locations);
+        plugin.saveConfig();
     }
 
 }

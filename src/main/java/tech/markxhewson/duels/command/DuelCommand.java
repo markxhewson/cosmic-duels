@@ -119,4 +119,40 @@ public class DuelCommand {
         duelGame.endGame();
     }
 
+    @Subcommand("debug")
+    @CommandPermission("duels.admin")
+    public void onDuelDebugCommand(Player player) {
+        if (plugin.getDebugPlayers().contains(player.getUniqueId())) {
+            plugin.getDebugPlayers().remove(player.getUniqueId());
+            player.sendMessage(CC.translate("&c&l(!) &cᴅᴇʙᴜɢ ᴍᴏᴅᴇ ᴅɪsᴀʙʟᴇᴅ!"));
+        } else {
+            plugin.getDebugPlayers().add(player.getUniqueId());
+            player.sendMessage(CC.translate("&a&l(!) &aᴅᴇʙᴜɢ ᴍᴏᴅᴇ ᴇɴᴀʙʟᴇᴅ!"));
+        }
+    }
+
+    @Subcommand("admin envoy")
+    @CommandPermission("duels.admin")
+    public void onDuelDebugEnvoyCommand(Player player) {
+        if (plugin.isEnvoyDebug()) {
+            plugin.setEnvoyDebug(false);
+            player.sendMessage(CC.translate("&c&l(!) &cᴇɴᴠᴏʏ ᴅᴇʙᴜɢ ᴍᴏᴅᴇ ᴅɪsᴀʙʟᴇᴅ!"));
+        } else {
+            plugin.setEnvoyDebug(true);
+            player.sendMessage(CC.translate("&a&l(!) &aᴇɴᴠᴏʏ ᴅᴇʙᴜɢ ᴍᴏᴅᴇ ᴇɴᴀʙʟᴇᴅ!"));
+        }
+    }
+
+    @Subcommand("admin arena")
+    @CommandPermission("duels.admin")
+    public void changeDebugArena(Player player, String arenaName) {
+        if (plugin.getConfig().getConfigurationSection("arenas." + arenaName) == null) {
+            player.sendMessage(CC.translate("&c&l(!) &cᴛʜᴀᴛ ᴀʀᴇɴᴀ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ!"));
+            return;
+        }
+
+        plugin.setDebugArenaName(arenaName);
+        player.sendMessage(CC.translate("&a&l(!) &aᴅᴇʙᴜɢ ᴀʀᴇɴᴀ ᴄʜᴀɴɢᴇᴅ ᴛᴏ &e" + arenaName + "&a!"));
+    }
+
 }

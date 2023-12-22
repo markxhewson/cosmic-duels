@@ -1,5 +1,6 @@
 package tech.markxhewson.duels.menu;
 
+import com.alpineclient.plugin.api.AlpineClientApi;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
@@ -88,6 +89,16 @@ public class ViewDuelSettingsMenu {
     }
 
     public void confirmSettings(InventoryClickEvent event) {
+        if (duelGame.getSettings().isSettingEnabled(DuelSetting.ALPINE_CLIENT)) {
+            Player player = (Player) event.getWhoClicked();
+            boolean isAlpine = AlpineClientApi.isPlayerConnected(player.getUniqueId());
+
+            if (!isAlpine) {
+                player.sendMessage(CC.translate("&c&l(!) &cʏᴏᴜʀ ᴅᴜᴇʟ ʜᴀs ᴀʟᴘɪɴᴇ ᴄʟɪᴇɴᴛ ʀᴇᴏ̨ᴜɪʀᴇᴅ, ᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴜsɪɴɢ ɪᴛ!"));
+                return;
+            }
+        }
+
         if (this.duelGame.getSettings().isSettingEnabled(DuelSetting.RISK_INVENTORY)) {
             this.duelGame.openRiskInventoryMenu();
         } else {
