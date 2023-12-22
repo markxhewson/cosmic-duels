@@ -51,10 +51,6 @@ public class PlayerInteractListener implements Listener {
                     Location location = player.getLocation();
                     plugin.getConfig().set("arenas." + plugin.getDebugArenaName() + ".spawnOne", LocationUtil.serializeLocation(location));
                     player.sendMessage(CC.translate("&a&l(!) &asᴘᴀᴡɴ ᴏɴᴇ sᴇᴛ ғᴏʀ " + plugin.getDebugArenaName() + "."));
-
-                    // debug msgs
-                    plugin.getServer().broadcastMessage("original val: " + plugin.getConfig().getString("arenas." + plugin.getDebugArenaName() + ".spawnOne"));
-                    plugin.getServer().broadcastMessage("to be updated val: " + LocationUtil.serializeLocation(location));
                 }
                 case EMERALD -> {
                     Location location = player.getLocation();
@@ -72,7 +68,6 @@ public class PlayerInteractListener implements Listener {
             }
 
             plugin.saveConfig();
-            plugin.getServer().broadcastMessage("new val: " + plugin.getConfig().getString("arenas." + plugin.getDebugArenaName() + ".spawnOne"));
         }
     }
 
