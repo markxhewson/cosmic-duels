@@ -53,8 +53,8 @@ public class DuelRewardsMenu {
                 new GuiItem(
                         new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                                 .setDisplayName("&6Retrieve rewards")
-                                .build(), event -> giveRewards((Player) event.getWhoClicked()
-                )), 8, 2
+                                .build(), event -> giveRewards((Player) event.getWhoClicked())
+                ), 8, 2
         );
 
         menu.addPane(pane);

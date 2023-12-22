@@ -160,37 +160,35 @@ public class DuelGame {
                 }
 
                 if (!getSettings().isSettingEnabled(DuelSetting.WEAPONS)) {
-                    getPlayers().forEach(player -> {
-                        player.getInventory().forEach(itemStack -> {
-                            if (itemStack == null || itemStack.getType() == Material.AIR) {
-                                return;
-                            }
+                    getPlayers().forEach(player -> player.getInventory().forEach(itemStack -> {
+                        if (itemStack == null || itemStack.getType() == Material.AIR) {
+                            return;
+                        }
 
-                            if (itemStack.getType().name().contains("SWORD")) {
-                                player.getInventory().remove(itemStack);
-                            }
+                        if (itemStack.getType().name().contains("SWORD")) {
+                            player.getInventory().remove(itemStack);
+                        }
 
-                            if (itemStack.getType().name().contains("BOW")) {
-                                player.getInventory().remove(itemStack);
-                            }
+                        if (itemStack.getType().name().contains("BOW")) {
+                            player.getInventory().remove(itemStack);
+                        }
 
-                            if (itemStack.getType().name().contains("AXE")) {
-                                player.getInventory().remove(itemStack);
-                            }
+                        if (itemStack.getType().name().contains("AXE")) {
+                            player.getInventory().remove(itemStack);
+                        }
 
-                            if (itemStack.getType().name().contains("SHIELD")) {
-                                player.getInventory().remove(itemStack);
-                            }
+                        if (itemStack.getType().name().contains("SHIELD")) {
+                            player.getInventory().remove(itemStack);
+                        }
 
-                            if (itemStack.getType().name().contains("TRIDENT")) {
-                                player.getInventory().remove(itemStack);
-                            }
+                        if (itemStack.getType().name().contains("TRIDENT")) {
+                            player.getInventory().remove(itemStack);
+                        }
 
-                            if (itemStack.getType().name().contains("CROSSBOW")) {
-                                player.getInventory().remove(itemStack);
-                            }
-                        });
-                    });
+                        if (itemStack.getType().name().contains("CROSSBOW")) {
+                            player.getInventory().remove(itemStack);
+                        }
+                    }));
                 }
             }
         }
@@ -225,10 +223,7 @@ public class DuelGame {
 
     public void announce(String message) {
         List<Player> players = List.of(this.getPlayerOne(), this.getPlayerTwo());
-
-        players.forEach(player -> {
-            player.sendMessage(CC.translate(message));
-        });
+        players.forEach(player -> player.sendMessage(CC.translate(message)));
     }
 
     public void addSpectator(Player player) {
