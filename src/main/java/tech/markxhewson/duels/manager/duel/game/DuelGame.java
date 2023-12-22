@@ -249,7 +249,7 @@ public class DuelGame {
                 .setDisplayName("&e&l" + player.getName() + "'s &eᴅᴇᴀᴛʜ ᴄᴇʀᴛɪғɪᴄᴀᴛᴇ")
                 .setLore(
                         "&f" + player.getName() + " &7ᴡᴀs ᴅᴇғᴇᴀᴛᴇᴅ ɪɴ ᴀ &f1ᴠ1 &7ᴅᴜᴇʟ ɪɴ ",
-                        "&&ᴛʜᴇ" + this.arena.getName() + " ᴀʀᴇɴᴀ &7ʙʏ &f" + this.winner.getName(),
+                        "&7ᴛʜᴇ " + this.arena.getName() + " ᴀʀᴇɴᴀ &7ʙʏ &f" + this.winner.getName(),
                         "&7at &f" + getFormattedTime() + "&7!"
                         )
                 .build();

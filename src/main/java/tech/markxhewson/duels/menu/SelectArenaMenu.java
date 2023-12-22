@@ -53,17 +53,18 @@ public class SelectArenaMenu {
                 DuelGame duelGame = plugin.getDuelGameManager().findGame(arena.getId());
 
                 pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS).setDisplayName(arena.getName())
-                        .setLore("&8> &c&lɪɴ ᴜsᴇ &7(" + duelGame.getPlayerOne().getName() + " &fᴠs &7" + duelGame.getPlayerTwo().getName() + ")", "", "&7ᴄʟɪᴄᴋ ᴛᴏ sᴘᴇᴄᴛᴀᴛᴇ.")
-                        .build(), event -> {
-                    event.getWhoClicked().closeInventory();
-                    setArena(arena);
-                }
+                        .setLore(
+                                "&esᴛᴀᴛᴇ: &c&lɪɴ ᴜsᴇ &7(" + duelGame.getPlayerOne().getName() + " &fᴠs &7" + duelGame.getPlayerTwo().getName() + ")"
+                        )
+                        .build()
                 ), index++, 1);
             } else {
-                pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS).setDisplayName(arena.getName()).setLore("&8> &a&lᴏᴘᴇɴ").build(), event -> {
-                    event.getWhoClicked().closeInventory();
-                    setArena(arena);
-                }), index++, 1);
+                pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS).setDisplayName(arena.getName())
+                        .setLore(
+                                "&esᴛᴀᴛᴇ: &a&lᴏᴘᴇɴ"
+                        )
+                        .build(), event -> setArena(arena)
+                ), index++, 1);
             }
         }
         menu.addPane(pane);
@@ -72,11 +73,12 @@ public class SelectArenaMenu {
     public void setArena(Arena arena) {
         if (arena.isInUse()) {
             this.duelGame.getPlayerOne().sendMessage(CC.translate("&c&l<!> &cᴛʜᴀᴛ ᴀʀᴇɴᴀ ɪs ɪɴ ᴜsᴇ!"));
-            this.plugin.getDuelGameManager().removeDuelGame(this.duelGame);
+            duelGame.getPlayerOne().closeInventory();
             return;
         }
 
         duelGame.setArena(arena);
+        duelGame.getPlayerOne().closeInventory();
         this.duelGame.getPlayerOne().sendMessage(CC.translate("&e<!> sᴜᴄᴄᴇssғᴜʟʟʏ sᴇɴᴛ &f" + this.duelGame.getPlayerTwo().getName() + "&e ᴀ ᴅᴜᴇʟ ɪɴᴠɪᴛᴇ!"));
         this.plugin.getDuelGameManager().addInvite(this.duelGame);
     }

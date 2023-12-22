@@ -10,7 +10,6 @@ import java.util.UUID;
 public class DuelReward {
 
     private final UUID gameUuid;
-    private final UUID winnerUuid = null;
     private final List<ItemStack> items;
 
 }

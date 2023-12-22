@@ -50,7 +50,7 @@ public class ViewArenasMenu {
                 pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS)
                         .setDisplayName(arena.getName())
                         .setLore(
-                                "&8> &c&lɪɴ ᴜsᴇ &7(" + duelGame.getPlayerOne().getName() + " &fᴠs &7" + duelGame.getPlayerTwo().getName() + ")",
+                                "&esᴛᴀᴛᴇ: &c&lɪɴ ᴜsᴇ &7(" + duelGame.getPlayerOne().getName() + " &fᴠs &7" + duelGame.getPlayerTwo().getName() + ")",
                                 "",
                                 "&7ᴄʟɪᴄᴋ ᴛᴏ sᴘᴇᴄᴛᴀᴛᴇ."
                         )
@@ -60,7 +60,9 @@ public class ViewArenasMenu {
                 pane.addItem(new GuiItem(new ItemBuilder(Material.GRASS)
                         .setDisplayName(arena.getName())
                         .setLore(
-                                "&8> &a&lᴏᴘᴇɴ"
+                                "&esᴛᴀᴛᴇ: &a&lᴏᴘᴇɴ",
+                                "",
+                                "&7sᴛᴀʀᴛ ᴀ ᴅᴜᴇʟ ᴜsɪɴɢ /ᴅᴜᴇʟ <ᴘʟᴀʏᴇʀ>!"
                         )
                         .build()
                 ), index++, 1);

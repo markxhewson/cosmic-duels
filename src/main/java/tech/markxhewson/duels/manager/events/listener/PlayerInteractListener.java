@@ -1,6 +1,7 @@
 package tech.markxhewson.duels.manager.events.listener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,14 +28,23 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && plugin.getDebugPlayers().contains(player.getUniqueId())) {
+        if (!plugin.getDebugPlayers().contains(player.getUniqueId())) {
+            return;
+        }
+
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack item = player.getInventory().getItemInMainHand();
             Block block = event.getClickedBlock();
 
             if (block == null) {
                 return;
             }
 
-            if (plugin.isEnvoyDebug()) {
+            if (item.getType() == Material.BLAZE_ROD && plugin.isEnvoyDebug()) {
                 addEnvoyLocation(block);
                 player.sendMessage(CC.translate("&a&l(!) &aᴇɴᴠᴏʏ ʟᴏᴄᴀᴛɪᴏɴ ᴀᴅᴅᴇᴅ ғᴏʀ " + plugin.getDebugArenaName() + "."));
                 return;
@@ -43,7 +53,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getHand() == EquipmentSlot.HAND && plugin.getDebugPlayers().contains(player.getUniqueId())) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
             ItemStack item = player.getInventory().getItemInMainHand();
 
             switch (item.getType()) {
